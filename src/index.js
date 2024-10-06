@@ -89,7 +89,6 @@ app.get("/", csrfProtection, (req, res) => {
             const newItemInput = document.getElementById('newItemInput');
             const csrfToken = document.getElementById('csrfToken').value;
 
-            // Function to fetch and display items
             function fetchItems() {
                 fetch('/api/items')
                     .then(response => response.json())
@@ -100,10 +99,8 @@ app.get("/", csrfProtection, (req, res) => {
                     });
             }
 
-            // Fetch items on page load
             fetchItems();
 
-            // Add new item
             newItemForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const name = newItemInput.value.trim();
@@ -116,6 +113,7 @@ app.get("/", csrfProtection, (req, res) => {
                         },
                         body: JSON.stringify({ name }),
                     })
+                    .then(response => response.json())
                     .then(() => {
                         newItemInput.value = '';
                         fetchItems();
@@ -142,6 +140,11 @@ app.post("/api/items", csrfProtection, (req, res) => {
   res.status(201).json(newItem);
 });
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
+// Only start the server if this file is run directly
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`Server running at http://localhost:\${port}`);
+  });
+}
+
+module.exports = app;
