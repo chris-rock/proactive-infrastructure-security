@@ -3,8 +3,8 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
-variable "project_name" {
-  description = "Name of the project. Used in resource names"
+variable "app_name" {
+  description = "Name of the application"
   default     = "proactive-security-demo"
 }
 
