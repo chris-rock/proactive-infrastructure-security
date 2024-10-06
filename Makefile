@@ -1,4 +1,4 @@
-.PHONY: install start dev build test docker/build docker/run ecr/login ecr/push-release tf/init tf/plan tf/apply tf/destroy
+.PHONY: install start dev build test docker/build docker/run ecr/login ecr/push-release ecr/build-multi-arch ecr/push-multi-archtf/init tf/plan tf/apply tf/destroy
 
 # AWS ECR variables
 AWS_ACCOUNT_ID ?= your-aws-account-id
@@ -38,6 +38,13 @@ ecr/login:
 ecr/push: docker/build ecr/login
 	docker tag npm-aws-demo:latest $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/$(ECR_REPOSITORY):latest
 	docker push $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/$(ECR_REPOSITORY):latest
+
+ecr/build-multi-arch:
+	docker buildx create --use
+	docker buildx build --platform linux/amd64,linux/arm64 -t $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/$(ECR_REPOSITORY):latest .
+
+ecr/push-multi-arch: ecr/build-multi-arch
+	docker buildx build --platform linux/amd64,linux/arm64 -t $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/$(ECR_REPOSITORY):latest --push .
 
 tf/init:
 	cd $(TF_DIR) && terraform init
