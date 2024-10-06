@@ -1,0 +1,21 @@
+{
+  "name": "npm-aws-demo",
+  "version": "1.0.0",
+  "description": "Demo npm application for AWS deployment",
+  "main": "src/index.js",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "jest",
+    "semgrep": "semgrep --config=auto"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "jest": "^27.0.6",
+    "semgrep": "^0.75.0"
+  }
+}
