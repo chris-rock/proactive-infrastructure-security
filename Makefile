@@ -25,6 +25,9 @@ docker/run:
 	docker run -p 3000:3000 npm-aws-demo
 
 test/lint:
+	tflint --chdir ./terraform
+
+test/sast:
 	semgrep scan .
 
 # only for testing, github actions are used for production
