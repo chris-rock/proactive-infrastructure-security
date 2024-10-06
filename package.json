@@ -8,14 +8,14 @@
   },
   "scripts": {
     "start": "node src/index.js",
-    "test": "jest",
-    "semgrep": "semgrep --config=auto"
+    "test": "jest"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.21.0",
+    "csurf": "^1.11.0",
+    "cookie-parser": "^1.4.5"
   },
   "devDependencies": {
-    "jest": "^27.0.6",
-    "semgrep": "^0.75.0"
+    "jest": "^27.0.6"
   }
 }
