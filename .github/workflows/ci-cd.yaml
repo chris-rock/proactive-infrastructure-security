@@ -41,6 +41,15 @@ jobs:
       - name: Semgrep
         run: semgrep ci
 
+  eslint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install modules
+        run: npm install
+      - name: Run ESLint
+        run: npx eslint
+
   tflint:
     runs-on: ubuntu-latest
     steps:

@@ -25,6 +25,7 @@ docker/run:
 	docker run -p 3000:3000 npm-aws-demo
 
 test/lint:
+	npx eslint src
 	tflint --chdir ./terraform
 
 test/sast:
