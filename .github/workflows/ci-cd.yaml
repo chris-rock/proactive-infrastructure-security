@@ -65,6 +65,14 @@ jobs:
       - name: Run TFLint
         run: tflint --chdir ./terraform -f compact
 
+  cnspec-tf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: mondoohq/actions/terraform-hcl@v11.0.0
+        with:
+          path: terraform
+
   build-and-push:
     needs: [test, semgrep, tflint]
     runs-on: ubuntu-latest
