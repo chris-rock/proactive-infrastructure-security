@@ -19,7 +19,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Use Node.js
         uses: actions/setup-node@v2
         with:
@@ -29,12 +29,17 @@ jobs:
 
   semgrep:
     runs-on: ubuntu-latest
+
+    container:
+      image: semgrep/semgrep
+
+    # Skip any PR created by dependabot to avoid permission issues:
+    if: (github.actor != 'dependabot[bot]')
+
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Semgrep
-        uses: returntocorp/semgrep-action@v1
-        with:
-          config: auto
+        run: semgrep ci
 
   build-and-push:
     needs: [test, semgrep]
@@ -42,7 +47,7 @@ jobs:
     if: github.event_name == 'release'
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -75,7 +80,7 @@ jobs:
     if: github.event_name == 'release'
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
