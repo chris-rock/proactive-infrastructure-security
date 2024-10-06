@@ -41,8 +41,23 @@ jobs:
       - name: Semgrep
         run: semgrep ci
 
+  tflint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: terraform-linters/setup-tflint@v4
+        name: Setup TFLint
+        with:
+          tflint_version: v0.52.0
+      - name: Show version
+        run: tflint --version
+      - name: Init TFLint
+        run: tflint --init
+      - name: Run TFLint
+        run: tflint --chdir ./terraform -f compact
+
   build-and-push:
-    needs: [test, semgrep]
+    needs: [test, semgrep, tflint]
     runs-on: ubuntu-latest
     if: github.event_name == 'release'
     steps:
