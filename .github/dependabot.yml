@@ -2,26 +2,44 @@ version: 2
 updates:
   # Enable version updates for npm
   - package-ecosystem: "npm"
-    # Look for `package.json` and `lock` files in the `root` directory
     directory: "/"
-    # Check the npm registry for updates every day (weekdays)
     schedule:
-      interval: "daily"
-    # Allow up to 10 open pull requests for npm dependencies
-    open-pull-requests-limit: 10
+      interval: "weekly"
+    # Group all dependencies together
+    groups:
+      dependencies:
+        patterns:
+          - "*"
 
   # Enable version updates for Docker
   - package-ecosystem: "docker"
-    # Look for a `Dockerfile` in the `root` directory
     directory: "/"
-    # Check for updates once a week
     schedule:
       interval: "weekly"
+    # Group all Docker updates together
+    groups:
+      docker-dependencies:
+        patterns:
+          - "*"
 
   # Enable version updates for GitHub Actions
   - package-ecosystem: "github-actions"
-    # Workflow files stored in the default location of `.github/workflows`
     directory: "/"
-    # Check for updates once a week
     schedule:
       interval: "weekly"
+    # Group all GitHub Actions updates together
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+
+  # Maintain dependencies for Terraform
+  - package-ecosystem: "terraform"
+    directory: "/terraform"
+    schedule:
+      interval: "weekly"
+    # Group all Terraform updates together
+    groups:
+      terraform-dependencies:
+        patterns:
+          - "*"
