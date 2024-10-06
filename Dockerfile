@@ -1,23 +1,32 @@
-# Use an official Node runtime as the parent image
-FROM node:20-alpine
+# Use a multi-arch base image
+FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
 
-# Set the working directory in the container
-WORKDIR /usr/src/app
-
-# Create a non-root user
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+WORKDIR /app
 
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
 # Install dependencies
-RUN npm ci --only=production
+RUN npm ci
 
 # Copy the rest of the application code
 COPY . .
 
+# Create a smaller production image
+FROM node:20-alpine
+
+# Create a non-root user
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+WORKDIR /app
+
+# Copy only necessary files from builder stage
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/src ./src
+COPY --from=builder /app/node_modules ./node_modules
+
 # Change ownership of the app files to the non-root user
-RUN chown -R appuser:appgroup /usr/src/app
+RUN chown -R appuser:appgroup /app
 
 # Switch to the non-root user
 USER appuser
@@ -25,5 +34,5 @@ USER appuser
 # Expose the port the app runs on
 EXPOSE 3000
 
-# Run the application
+# Start the application
 CMD ["node", "src/index.js"]
