@@ -26,10 +26,20 @@ docker/run:
 
 test/lint:
 	npx eslint src
-	tflint --chdir ./terraform
 
 test/sast:
 	semgrep scan .
+
+test/iac:
+	tflint --chdir ./terraform
+	cnspec scan terraform hcl ./terraform
+	cnspec scan docker file Dockerfile
+	
+test/runtime:
+	cnspec scan aws
+
+test/gh-repo:
+	cnspec scan github repo chris-rock/proactive-infrastructure-security
 
 # only for testing, github actions are used for production
 ecr/login:
