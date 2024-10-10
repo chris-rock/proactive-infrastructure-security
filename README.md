@@ -1,4 +1,7 @@
-# Proactive Infrastructure Security with SBOM and IaC
+# Proactive Infrastructure Security
+
+> NOTE: This repository is going to be further updated to describe the journey
+> of implementing proactive infrastructure security
 
 ## Abstract
 
